@@ -1,0 +1,15 @@
+{
+  "name": "davit/jobqueue",
+  "description": "Using this app you can add tasks to queue and run them with command line.",
+  "authors": [
+    {
+      "name": "Davit Huroyan",
+      "email": "davithuroyan@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "app\\": "src/app"
+    }
+  }
+}
