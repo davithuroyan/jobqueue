@@ -159,7 +159,7 @@ class Job implements JobInterface
         $obj->setId($data->id);
         $obj->setUrl($data->url);
         $obj->setPriority($data->priority);
-        $obj->setResponseCode($data->response_code);
+//        $obj->setResponseCode($data->response_code);
         $obj->setExecutedAt($data->executed_at);
         $obj->setStatus($data->status);
 

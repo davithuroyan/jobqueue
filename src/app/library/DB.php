@@ -156,5 +156,25 @@ class DB
         return false;
     }
 
+    /**
+     * @param string $query
+     * @param array $params
+     * @return mixed
+     */
+    public function execute(string $query, array $params = [])
+    {
 
+        try {
+            $this->dbh->beginTransaction();
+            $this->dbh->query($query); // no need for prepare/execute since there are no parameters
+            $stmt = $this->dbh->query("SELECT @update_id as id");
+            $res = $stmt->fetch(\PDO::FETCH_ASSOC);
+            $id = $res['id'];
+            $this->dbh->commit();
+        } catch (Exception $e) {
+            $this->dbh->rollBack();
+        }
+
+        return $id;
+    }
 }

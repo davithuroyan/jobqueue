@@ -30,6 +30,10 @@ class Jobs implements MainInterface
         return $this;
     }
 
+    /**
+     * @param Job $job
+     * @return bool
+     */
     public function create(Job $job)
     {
 
@@ -42,9 +46,18 @@ class Jobs implements MainInterface
         return $this->_db->insert(self::TABLE, $data);
     }
 
-    public function get($priority = null)
+    /**
+     * @return Job|null
+     */
+    public function get()
     {
-        $res = $this->_db->select(self::TABLE, ['*'], ["status" => Job::STATUS_NEW], "priority", "DESC");
+        $query = "SET @update_id := 0;
+            UPDATE jobs SET status = " . Job::STATUS_EXECUTING . ", id = (SELECT @update_id := id)
+            WHERE status = " . Job::STATUS_NEW . " ORDER BY priority DESC LIMIT 1;";
+
+        $jobId = $this->_db->execute($query);
+
+        $res = $this->_db->select(self::TABLE, ['*'], ["id" => $jobId]);
         if ($res) {
             return Job::populate($res);
         }
